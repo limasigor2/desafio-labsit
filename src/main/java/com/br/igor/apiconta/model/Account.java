@@ -1,5 +1,8 @@
 package com.br.igor.apiconta.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author igor
@@ -16,7 +22,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table
+@Table(name = "account")
 public class Account {
 
 	@Id
@@ -34,6 +40,11 @@ public class Account {
 	@JoinColumn(name = "agency_id", referencedColumnName = "id")
 	private Agency agency;
 
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "account")
+	private List<Transition> transitions = new ArrayList<>();
+
 	@Column(name = "saldoAtual")
 	private float currentBalance;
 
@@ -47,6 +58,14 @@ public class Account {
 		this.person = person;
 		this.agency = agency;
 		this.currentBalance = currentBalance;
+	}
+
+	public List<Transition> getTransitions() {
+		return transitions;
+	}
+
+	public void setTransitions(List<Transition> transitions) {
+		this.transitions = transitions;
 	}
 
 	public long getId() {
@@ -87,6 +106,10 @@ public class Account {
 
 	public void setAgency(Agency agency) {
 		this.agency = agency;
+	}
+
+	public void addTransition(Transition trans) {
+		this.transitions.add(trans);
 	}
 
 	@Override

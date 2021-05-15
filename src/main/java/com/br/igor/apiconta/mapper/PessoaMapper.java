@@ -18,8 +18,7 @@ public class PessoaMapper {
 			PessoaFisica pessoaFisica = modelMapper.map(dto, PessoaFisica.class);
 			return pessoaFisica;
 		}
-		PessoaJuridica pessoaJuridica = modelMapper.map(dto, PessoaJuridica.class);
-		return pessoaJuridica;
+		return modelMapper.map(dto, PessoaJuridica.class);
 	}
 
 	public PersonDTO objToDto(PessoaFisica person) {
@@ -28,16 +27,12 @@ public class PessoaMapper {
 		personDto.setTypePerson(TypePerson.PF);
 		return personDto;
 	}
-	
+
 	public PersonDTO objToDto(PessoaJuridica person) {
 		ModelMapper modelMapper = new ModelMapper();
 		PersonDTO personDto = modelMapper.map(person, PersonDTO.class);
 		personDto.setTypePerson(TypePerson.PJ);
 		return personDto;
 	}
-
-	
-
-
 
 }

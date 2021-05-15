@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.igor.apiconta.dto.TransactionDTO;
+import com.br.igor.apiconta.exception.ApicontaException;
 import com.br.igor.apiconta.service.AccountService;
 
 @RestController()
@@ -20,20 +21,19 @@ public class AccountController {
 	private AccountService accountService;
 
 	@PutMapping("/sacar")
-	public ResponseEntity<?> sacar(@RequestBody TransactionDTO saqueDto) {
+	public ResponseEntity<?> sacar(@RequestBody TransactionDTO saqueDto) throws ApicontaException {
 		return ResponseEntity.ok(accountService.sacar(saqueDto));
 	}
 
 	@PutMapping("/depositar")
-	public ResponseEntity<?> depositar(@RequestBody TransactionDTO saqueDto) {
+	public ResponseEntity<?> depositar(@RequestBody TransactionDTO saqueDto) throws ApicontaException {
 		return ResponseEntity.ok(accountService.depositar(saqueDto));
 	}
 
 	@GetMapping(value = "/{accountNumber}/{aggencyNumber}")
 	public ResponseEntity<?> getCurrentBalance(@PathVariable("accountNumber") String accountNumber,
-			@PathVariable("aggencyNumber") String aggencyNumber) {
+			@PathVariable("aggencyNumber") String aggencyNumber) throws ApicontaException {
 		return ResponseEntity.ok(accountService.getCurrentBalance(accountNumber, aggencyNumber));
 	}
-	
-	
+
 }

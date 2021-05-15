@@ -2,13 +2,14 @@ package com.br.igor.apiconta.service;
 
 import java.util.HashSet;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.br.igor.apiconta.dto.MessageDTO;
 import com.br.igor.apiconta.dto.PersonDTO;
 import com.br.igor.apiconta.dto.TypePerson;
+import com.br.igor.apiconta.exception.ApicontaException;
 import com.br.igor.apiconta.mapper.PessoaMapper;
 import com.br.igor.apiconta.model.Account;
 import com.br.igor.apiconta.model.Agency;
@@ -38,7 +39,7 @@ public class PersonService {
 	@Autowired
 	private AccountRepository accountRepository;
 
-	public PersonDTO save(PersonDTO personDto) {
+	public MessageDTO save(PersonDTO personDto) {
 
 		Person person = mapper.dtoToObj(personDto);
 		personDto.getAccountNumber();
@@ -50,25 +51,30 @@ public class PersonService {
 		agencyRepository.save(agency);
 
 		if (personDto.getTypePerson().equals(TypePerson.PF))
-			return mapper.objToDto(pessoaFisicaRepository.save((PessoaFisica) person));
+			mapper.objToDto(pessoaFisicaRepository.save((PessoaFisica) person));
 		else
-			return mapper.objToDto(pessoaJuridicaRepository.save((PessoaJuridica) person));
+			mapper.objToDto(pessoaJuridicaRepository.save((PessoaJuridica) person));
+
+		return new MessageDTO("Usuário cadastrado com sucesso", "user.saved.sucess");
 	}
 
-	public PersonDTO update(PersonDTO personDto) {
+	public MessageDTO update(PersonDTO personDto) throws ApicontaException {
 		if (personDto.getTypePerson().equals(TypePerson.PF)) {
 			PessoaFisica pessoaFisica = pessoaFisicaRepository.findByIdentification(personDto.getIdentification())
-					.orElseThrow(() -> new EntityNotFoundException());
+					.orElseThrow(() -> new ApicontaException(HttpStatus.NOT_FOUND, "person.not-found",
+							"Pessoa não encontrada"));
 			pessoaFisica.setName(personDto.getName());
 			pessoaFisicaRepository.save(pessoaFisica);
-			return mapper.objToDto(pessoaFisica);
+			return new MessageDTO("Usuário atualizado com sucesso", "user.updated.sucess");
+
 		}
 
 		PessoaJuridica pessoaJuridica = pessoaJuridicaRepository.findByIdentification(personDto.getIdentification())
-				.orElseThrow(() -> new EntityNotFoundException());
+				.orElseThrow(
+						() -> new ApicontaException(HttpStatus.NOT_FOUND, "person.not-found", "Pessoa não encontrada"));
 		pessoaJuridica.setName(personDto.getName());
 		pessoaJuridicaRepository.save(pessoaJuridica);
-		return mapper.objToDto(pessoaJuridica);
+		return new MessageDTO("Usuário atualizado com sucesso", "user.updated.sucess");
 
 	}
 }

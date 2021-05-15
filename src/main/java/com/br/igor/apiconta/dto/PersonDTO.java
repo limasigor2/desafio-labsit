@@ -1,5 +1,8 @@
 package com.br.igor.apiconta.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class PersonDTO {
 
 	private String name;
@@ -10,6 +13,8 @@ public class PersonDTO {
 
 	private String agencyNumber;
 
+	@NotBlank
+	@Size(min = 3, max = 20)
 	private String identification;
 
 	public String getName() {
