@@ -1,5 +1,6 @@
 package com.br.igor.apiconta.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,15 +9,17 @@ import javax.persistence.Table;
 @Table(name = "pessoa_fisica")
 public class PessoaFisica extends Person {
 
-	@Column(name = "cpf")
-	private String CPF;
+	@Column(name = "cpf", unique = true)
+	private String identification;
 
-	public String getCPF() {
-		return CPF;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setCPF(String CPF) {
-		this.CPF = CPF;
+	public void setIdentification(String identification) {
+		this.identification = identification;
 	}
 
+	
+	
 }

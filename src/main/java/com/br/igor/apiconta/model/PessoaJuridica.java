@@ -8,15 +8,15 @@ import javax.persistence.Table;
 @Table(name = "pessoa_juridica")
 public class PessoaJuridica extends Person {
 
-	@Column(name = "cnpf")
-	private String CNPJ;
+	@Column(name = "cnpf", unique = true)
+	private String identification;
 
-	public String getCNPJ() {
-		return CNPJ;
+	public String getIdentification() {
+		return identification;
 	}
 
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
+	public void setIdentification(String identification) {
+		this.identification = identification;
 	}
 
 }

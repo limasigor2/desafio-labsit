@@ -37,6 +37,18 @@ public class Account {
 	@Column(name = "saldoAtual")
 	private float currentBalance;
 
+	public Account() {
+	}
+
+	public Account(String numberAccount, Person person, Agency agency, float currentBalance) {
+		super();
+
+		this.numberAccount = numberAccount;
+		this.person = person;
+		this.agency = agency;
+		this.currentBalance = currentBalance;
+	}
+
 	public long getId() {
 		return id;
 	}

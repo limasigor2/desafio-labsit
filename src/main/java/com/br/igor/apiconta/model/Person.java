@@ -1,6 +1,8 @@
 package com.br.igor.apiconta.model;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -42,5 +44,28 @@ public class Person {
 	public void setAccounts(Set<Account> accounts) {
 		this.accounts = accounts;
 	}
+
+	@Override
+	public String toString() {
+		final int maxLen = 10;
+		return "Person [id=" + id + ", name=" + name + ", accounts="
+				+ (accounts != null ? toString(accounts, maxLen) : null) + "]";
+	}
+
+	private String toString(Collection<?> collection, int maxLen) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		int i = 0;
+		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+			if (i > 0)
+				builder.append(", ");
+			builder.append(iterator.next());
+		}
+		builder.append("]");
+		return builder.toString();
+	}
+
+
+	
 
 }
