@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.br.igor.apiconta.dto.MessageDTO;
 import com.br.igor.apiconta.dto.PersonDTO;
 import com.br.igor.apiconta.dto.TypePerson;
+import com.br.igor.apiconta.dto.UpdateDTO;
 import com.br.igor.apiconta.exception.ApicontaException;
 import com.br.igor.apiconta.mapper.PessoaMapper;
 import com.br.igor.apiconta.model.Account;
@@ -50,7 +51,7 @@ public class PersonService {
 		accountRepository.save(account);
 		agencyRepository.save(agency);
 
-		if (personDto.getTypePerson().equals(TypePerson.PF))
+		if (personDto.getTypePerson().equals(TypePerson.PF.toString()))
 			mapper.objToDto(pessoaFisicaRepository.save((PessoaFisica) person));
 		else
 			mapper.objToDto(pessoaJuridicaRepository.save((PessoaJuridica) person));
@@ -58,7 +59,8 @@ public class PersonService {
 		return new MessageDTO("Usuário cadastrado com sucesso", "user.saved.sucess");
 	}
 
-	public MessageDTO update(PersonDTO personDto) throws ApicontaException {
+	public MessageDTO update(UpdateDTO personDto) throws ApicontaException {
+		// TIPO da pessoa, nome, identificação
 		if (personDto.getTypePerson().equals(TypePerson.PF)) {
 			PessoaFisica pessoaFisica = pessoaFisicaRepository.findByIdentification(personDto.getIdentification())
 					.orElseThrow(() -> new ApicontaException(HttpStatus.NOT_FOUND, "person.not-found",

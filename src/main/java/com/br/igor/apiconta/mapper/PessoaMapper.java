@@ -14,7 +14,7 @@ public class PessoaMapper {
 
 	public Person dtoToObj(PersonDTO dto) {
 		ModelMapper modelMapper = new ModelMapper();
-		if (dto.getTypePerson().equals(TypePerson.PF)) {
+		if (dto.getTypePerson().equals(TypePerson.PF.toString())) {
 			PessoaFisica pessoaFisica = modelMapper.map(dto, PessoaFisica.class);
 			return pessoaFisica;
 		}
@@ -24,14 +24,14 @@ public class PessoaMapper {
 	public PersonDTO objToDto(PessoaFisica person) {
 		ModelMapper modelMapper = new ModelMapper();
 		PersonDTO personDto = modelMapper.map(person, PersonDTO.class);
-		personDto.setTypePerson(TypePerson.PF);
+		personDto.setTypePerson(TypePerson.PF.toString());
 		return personDto;
 	}
 
 	public PersonDTO objToDto(PessoaJuridica person) {
 		ModelMapper modelMapper = new ModelMapper();
 		PersonDTO personDto = modelMapper.map(person, PersonDTO.class);
-		personDto.setTypePerson(TypePerson.PJ);
+		personDto.setTypePerson(TypePerson.PJ.toString());
 		return personDto;
 	}
 

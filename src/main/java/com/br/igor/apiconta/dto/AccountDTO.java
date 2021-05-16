@@ -3,6 +3,7 @@ package com.br.igor.apiconta.dto;
 public class AccountDTO {
 
 	private String accountNumber;
+
 	private float currentBalance;
 
 	public String getAccountNumber() {

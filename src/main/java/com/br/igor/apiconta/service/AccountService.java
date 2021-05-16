@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.br.igor.apiconta.dto.AccountDTO;
 import com.br.igor.apiconta.dto.MessageDTO;
-import com.br.igor.apiconta.dto.TransactionDTO;
 import com.br.igor.apiconta.exception.ApicontaException;
 import com.br.igor.apiconta.dto.SaldoDTO;
+import com.br.igor.apiconta.dto.TransacaoDTO;
 import com.br.igor.apiconta.mapper.AccountMapper;
 import com.br.igor.apiconta.model.Account;
 import com.br.igor.apiconta.repository.AccountRepository;
@@ -32,23 +32,23 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public AccountDTO sacar(TransactionDTO trans) throws ApicontaException {
-		Account account = findAccountByAccountNumberAndAgencyNumber(trans.getAccountNumber(), trans.getAgencyNumber());
+	public AccountDTO sacar(TransacaoDTO saqueDto) throws ApicontaException {
+		Account account = findAccountByAccountNumberAndAgencyNumber(saqueDto.getAccountNumber(), saqueDto.getAgencyNumber());
 
-		account.setCurrentBalance(account.getCurrentBalance() - trans.getValue());
-		transitionService.addTransiction(-trans.getValue(), account.getCurrentBalance(), account);
+		account.setCurrentBalance(account.getCurrentBalance() - saqueDto.getValue());
+		transitionService.addTransiction(-saqueDto.getValue(), account.getCurrentBalance(), account);
 
 		return mapper.objToDto(accountRepository.save(account));
 
 	}
 
-	public MessageDTO depositar(TransactionDTO saqueDto) throws ApicontaException {
+	public MessageDTO depositar(TransacaoDTO depositoDto) throws ApicontaException {
 
-		Account account = findAccountByAccountNumberAndAgencyNumber(saqueDto.getAccountNumber(),
-				saqueDto.getAgencyNumber());
+		Account account = findAccountByAccountNumberAndAgencyNumber(depositoDto.getAccountNumber(),
+				depositoDto.getAgencyNumber());
 
-		account.setCurrentBalance(account.getCurrentBalance() + saqueDto.getValue());
-		transitionService.addTransiction(saqueDto.getValue(), account.getCurrentBalance(), account);
+		account.setCurrentBalance(account.getCurrentBalance() + depositoDto.getValue());
+		transitionService.addTransiction(depositoDto.getValue(), account.getCurrentBalance(), account);
 		accountRepository.save(account);
 		return new MessageDTO("Depósito realizado com sucesso", "deposit.success");
 

@@ -1,20 +1,28 @@
 package com.br.igor.apiconta.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import com.br.igor.apiconta.util.CpfOrCnpj;
 
 public class PersonDTO {
 
+	@NotBlank(message = "name.not-blank")
 	private String name;
 
-	private TypePerson typePerson;
+	@NotNull(message = "type-person.not-null")
+	@Pattern(regexp = "^(PJ|PF)$", message = "type-person.not-valid")
+	private String typePerson;
 
+	@NotBlank(message = "account-number.not-blank")
 	private String accountNumber;
 
+	@NotBlank(message = "agency-number.not-blank")
 	private String agencyNumber;
 
-	@NotBlank
-	@Size(min = 3, max = 20)
+	@NotBlank(message = "identification.not-blank")
+	@CpfOrCnpj
 	private String identification;
 
 	public String getName() {
@@ -25,11 +33,11 @@ public class PersonDTO {
 		this.name = name;
 	}
 
-	public TypePerson getTypePerson() {
+	public String getTypePerson() {
 		return typePerson;
 	}
 
-	public void setTypePerson(TypePerson typePerson) {
+	public void setTypePerson(String typePerson) {
 		this.typePerson = typePerson;
 	}
 
@@ -54,13 +62,14 @@ public class PersonDTO {
 	}
 
 	public void setIdentification(String identification) {
-		this.identification = identification;
+		this.identification = identification.replace("-","").replace(".", "").replace("/", "");
 	}
-
+	
 	@Override
 	public String toString() {
 		return "PersonDTO [name=" + name + ", typePerson=" + typePerson + ", accountNumber=" + accountNumber
 				+ ", agencyNumber=" + agencyNumber + ", identification=" + identification + "]";
 	}
 
+	
 }

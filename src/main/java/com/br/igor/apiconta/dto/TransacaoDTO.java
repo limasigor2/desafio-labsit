@@ -1,8 +1,16 @@
 package com.br.igor.apiconta.dto;
 
-public class TransactionDTO {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
+public class TransacaoDTO {
+	@NotBlank(message = "agency-number.not-blank")
 	private String agencyNumber;
+
+	@NotBlank(message = "account-number.not-blank")
 	private String accountNumber;
+
+	@Min(value = 0, message = "value.lower-than-zero")
 	private long value;
 
 	public String getAgencyNumber() {
